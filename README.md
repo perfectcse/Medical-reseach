@@ -60,17 +60,3 @@ APIs:
 - OpenAlex API
 - ClinicalTrials API
 
-## ⚙️ How to Run
-
-### Backend
-```bash
-cd backend
-npm install
-node server.js
-
-Architecture
-The system follows a modular architecture:
-Data aggregation layer
-Processing & ranking layer
-AI-style summarization layer
-React-based frontend UI
