@@ -8,27 +8,27 @@ const searchData = async (req, res) => {
   try {
     const { disease, query } = req.query;
 
-    // validation
+    
     if (!disease || !query) {
       return res.status(400).json({
         error: "Please provide both disease and query",
       });
     }
 
-    // query expansion
+    
     const finalQuery = `${query} ${disease}`;
 
-    // fetch all APIs
+    
     const pubmedData = await fetchPubMedData(finalQuery);
     const openAlexData = await fetchOpenAlexData(finalQuery);
     const clinicalTrials = await fetchClinicalTrials(disease);
 
-    // limit results
+    
     const limitedPubmed = pubmedData.slice(0, 5);
     const limitedOpenAlex = openAlexData.slice(0, 5);
     const limitedTrials = clinicalTrials.slice(0, 3);
 
-    // merge publications
+    
     let publications = [
       ...limitedPubmed.map((item) => ({
         ...item,
@@ -40,7 +40,7 @@ const searchData = async (req, res) => {
       })),
     ];
 
-    // ranking
+    
     publications = rankPublications(publications, finalQuery).slice(0, 6);
 
     // 🔥 LLM CALL (MOST IMPORTANT)
@@ -50,10 +50,10 @@ const searchData = async (req, res) => {
       limitedTrials
     );
 
-    // final response
+    
     res.json({
       query: finalQuery,
-      aiResponse, // 🔥 THIS IS NEW
+      aiResponse, 
       totalResults: publications.length,
       publications,
       clinicalTrials: limitedTrials,
